@@ -3,7 +3,7 @@
 . /scripts/helpers/base.sh
   
 head "Installing Unit-Test Plugin"
-helm plugin install https://github.com/quintush/helm-unittest > /dev/null 2>&1
+helm plugin install https://github.com/helm-unittest/helm-unittest > /dev/null 2>&1
 
 head "Execute Unit-Tests"
 for chart in ${INPUT_CHARTS}; do
