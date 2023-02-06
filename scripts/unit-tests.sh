@@ -12,7 +12,7 @@ for chart in ${INPUT_CHARTS}; do
     log "${chart}" "${Green}Unit-Tests disabled${Off} ✔"; 
   else 
     log "${chart}" "${Yellow}Executing Unit-Tests${Off}"; 
-    helm unittest --color -3 ${UNIT_TEST_ARGS} "${chart}"
+    helm unittest --color ${UNIT_TEST_ARGS} "${chart}"
     if [ $? -eq 0 ]; then 
       log "${chart}" "${Green}Unit-Tests succeded${Off} ✔"; 
     else
