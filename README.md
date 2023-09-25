@@ -48,14 +48,14 @@ jobs:
 
       ## Runs Helm-Docs Script
       - name: Run docs-testing (helm-docs)
-        uses: buttahtoast/helm-release-action@master
+        uses: mintel/helm-release-action@master
         with:
           charts: "${{ steps.list-changed.outputs.changed_charts }}"
         if: steps.list-changed.outputs.changed == 'true'  
  
       ## Runs Kube-Linter Script
       - name: Run kube-linter 
-        uses: buttahtoast/helm-release-action@master
+        uses: mintel/helm-release-action@master
         with:
           exec: "linter"
           charts: "${{ steps.list-changed.outputs.changed_charts }}"
@@ -63,7 +63,7 @@ jobs:
 
       ## Runs Unit-Tests Script
       - name: Run Unit-Tests
-        uses: buttahtoast/helm-release-action@master
+        uses: mintel/helm-release-action@master
         with:
           exec: "unit-tests"
           charts: "${{ steps.list-changed.outputs.changed_charts }}"
