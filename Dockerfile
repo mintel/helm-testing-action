@@ -2,9 +2,11 @@ FROM alpine
 
 COPY ./scripts /scripts
 COPY ./selector.sh /
+RUN chmod +x -R /scripts ./selector.sh
+
+WORKDIR /tmp
 
 RUN apk add --no-cache ca-certificates curl bash git openssl jq perl-utils \
-  && chmod +x -R /scripts ./selector.sh \
   && curl -fsSLo get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
   && chmod 700 get_helm.sh \
   && ./get_helm.sh \
@@ -13,9 +15,12 @@ RUN apk add --no-cache ca-certificates curl bash git openssl jq perl-utils \
   && mv ./kube-linter /usr/local/bin/ \
   && curl -s -L -o /usr/local/bin/spruce https://github.com/geofffranks/spruce/releases/download/$(curl --silent "https://api.github.com/repos/geofffranks/spruce/releases/latest" | jq -r .tag_name)/spruce-linux-amd64 \
   && chmod +x /usr/local/bin/spruce \
-  && curl -s -L -o /usr/local/bin/helm-docs.tar.gz "https://github.com/norwoodj/helm-docs/releases/download/$(curl --silent "https://api.github.com/repos/norwoodj/helm-docs/releases/latest" | jq -r .tag_name)/helm-docs_$(curl --silent "https://api.github.com/repos/norwoodj/helm-docs/releases/latest" | jq -r .tag_name | cut -d "v" -f2-)_Linux_x86_64.tar.gz" \
-  && cd /usr/local/bin/ && tar xfv helm-docs.tar.gz \ 
-  && chmod +x ./helm-docs
+  && curl -s -L -o /tmp/helm-docs.tar.gz "https://github.com/norwoodj/helm-docs/releases/download/$(curl --silent "https://api.github.com/repos/norwoodj/helm-docs/releases/latest" | jq -r .tag_name)/helm-docs_Linux_x86_64.tar.gz" \
+  && tar x -f helm-docs.tar.gz \
+  && chmod +x helm-docs \
+  && cp helm-docs /usr/local/bin/helm-docs \
+  && rm *
+
+WORKDIR /
 
 CMD [ "/bin/bash", "/selector.sh" ]
-
