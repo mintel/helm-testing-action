@@ -15,7 +15,7 @@ RUN apk add --no-cache ca-certificates curl bash git openssl jq perl-utils \
   && mv ./kube-linter /usr/local/bin/ \
   && curl -s -L -o /usr/local/bin/spruce https://github.com/geofffranks/spruce/releases/download/$(curl --silent "https://api.github.com/repos/geofffranks/spruce/releases/latest" | jq -r .tag_name)/spruce-linux-amd64 \
   && chmod +x /usr/local/bin/spruce \
-  && curl -s -L -o /tmp/helm-docs.tar.gz "https://github.com/norwoodj/helm-docs/releases/download/$(curl --silent "https://api.github.com/repos/norwoodj/helm-docs/releases/latest" | jq -r .tag_name)/helm-docs_Linux_x86_64.tar.gz" \
+  && curl -s -L -o /tmp/helm-docs.tar.gz $(curl --silent "https://api.github.com/repos/norwoodj/helm-docs/releases/latest" | jq -r '.assets[] | select(.name | endswith("Linux_x86_64.tar.gz")).browser_download_url') \
   && tar x -f helm-docs.tar.gz \
   && chmod +x helm-docs \
   && cp helm-docs /usr/local/bin/helm-docs \
