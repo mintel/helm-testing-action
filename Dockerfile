@@ -6,11 +6,13 @@ RUN chmod +x -R /scripts ./selector.sh
 
 WORKDIR /tmp
 
+ARG KUBE_LINTER_VERSION=v0.7.6
+
 RUN apk add --no-cache ca-certificates curl bash git openssl jq perl-utils \
   && curl -fsSLo get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 \
   && chmod 700 get_helm.sh \
   && ./get_helm.sh \
-  && curl -sL "https://github.com/stackrox/kube-linter/releases/download/$(curl --silent "https://api.github.com/repos/stackrox/kube-linter/releases/latest" | jq -r .tag_name)/kube-linter-linux.tar.gz" | tar xz \
+  && curl -sL "https://github.com/stackrox/kube-linter/releases/download/$KUBE_LINTER_VERSION/kube-linter-linux.tar.gz" | tar xz \
   && chmod +x ./kube-linter \
   && mv ./kube-linter /usr/local/bin/ \
   && curl -s -L -o /usr/local/bin/spruce https://github.com/geofffranks/spruce/releases/download/$(curl --silent "https://api.github.com/repos/geofffranks/spruce/releases/latest" | jq -r .tag_name)/spruce-linux-amd64 \
